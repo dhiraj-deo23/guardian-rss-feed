@@ -1,7 +1,7 @@
 import redis from "redis";
 
 const REDIS_PORT = process.env.PORT || 6379;
-const DEFAULT_EXPIRATION = 60;
+const DEFAULT_EXPIRATION = 600;
 
 const redisCLient = redis.createClient(REDIS_PORT);
 
