@@ -2,7 +2,7 @@ import express from "express";
 import { config } from "dotenv";
 import sectionRouter from "./src/router/sections.js";
 
-//configuring env varaibles
+// configuring env varaibles
 
 config();
 

@@ -5,15 +5,22 @@ import { createRSSFeed } from "../utils/createRSSFeed.js";
 
 const router = express.Router();
 
+// caching section list in memory
+const sectionsCache = await sectionList();
+
 router.get("/", async (req, res) => {
-  res.json(await sectionList());
+  res.json(sectionsCache);
 });
 
 router.get("/:content", async (req, res) => {
   try {
-    const contents = await sectionList();
-    if (!contents.includes(req.params.content))
+    const sections = [...sectionsCache];
+
+    // checking if endpoint is present in section list, also checks for small letters and/or hphenated endpoints only by default
+    if (!sections.includes(req.params.content))
       return res.status(400).json({ error: "invalid query!" });
+
+    // making api request to guardian api
     const response = await fetch(
       `${process.env.BASE_URL}/${req.params.content}?show-fields=body&format=json&api-key=${process.env.API_KEY}`
     );
