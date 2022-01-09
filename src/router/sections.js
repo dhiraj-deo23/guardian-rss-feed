@@ -1,8 +1,8 @@
 import express from "express";
 import fetch from "node-fetch";
-import sectionList from "../utils/sectionlist.js";
-import { createRSSFeed } from "../utils/createRSSFeed.js";
-import { redisCache, setCache } from "../utils/cacheMiddleware.js";
+import sectionList from "../services/sectionlist.js";
+import { createRSSFeed } from "../services/createRSSFeed.js";
+import { redisCache, setCache } from "../services/cacheMiddleware.js";
 
 const router = express.Router();
 
