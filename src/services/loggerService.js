@@ -1,7 +1,17 @@
-import { createLogger } from "winston";
+import pkg from "winston";
+const { createLogger, transports, format } = pkg;
 
 const logger = createLogger({
-  level: "info",
-  format: winston.format.json(),
-  transports: [new winston.transports.File({ filename: "eror.log" })],
+  format: format.combine(
+    format.timestamp({
+      format: "YYYY-MM-DD HH:mm:ss",
+    }),
+    format.json()
+  ),
+  transports: [
+    new transports.File({ filename: "app.log", level: "info" }),
+    new transports.Console({ level: "silly" }),
+  ],
 });
+
+export { logger };

@@ -3,6 +3,7 @@ import fetch from "node-fetch";
 import sectionList from "../services/sectionlist.js";
 import { createRSSFeed } from "../services/createRSSFeed.js";
 import { redisCache, setCache } from "../services/cacheMiddleware.js";
+import { logger } from "../services/loggerService.js";
 
 const router = express.Router();
 
@@ -15,11 +16,18 @@ router.get("/", async (req, res) => {
 
 router.get("/:section", redisCache, async (req, res) => {
   try {
-    const sections = [...sectionsCache];
+    if (!sectionsCache || sectionsCache.error !== undefined)
+      throw new Error("section list unavailable!");
 
-    // checking if endpoint is present in section list, also checks for small letters and/or hyphenated endpoints only by default
-    if (!sections.includes(req.params.section))
-      return res.status(400).json({ error: "invalid query!" });
+    // checks for small letters and/or hyphenated endpoints
+    if (!/^[a-z]+(-?)[a-z]+$/gm.test(req.params.section))
+      return res
+        .status(400)
+        .json({ error: "only lowercase letters and hyphens allowed!" });
+
+    // checking if endpoint is present in section list
+    if (!sectionsCache.includes(req.params.section))
+      return res.status(404).json({ error: "invalid query! Not found!" });
 
     // making api request to guardian api
     const response = await fetch(
@@ -37,6 +45,7 @@ router.get("/:section", redisCache, async (req, res) => {
 
     const feed = createRSSFeed(dataForRssFeed);
     setCache(req.params.section, JSON.stringify(feed));
+    logger.info(`cache set for 10 mins for key ${req.params.section}`);
 
     res.send(feed);
   } catch (error) {

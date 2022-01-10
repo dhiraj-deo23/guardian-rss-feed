@@ -3,7 +3,6 @@ import { config } from "dotenv";
 import sectionRouter from "./src/router/sections.js";
 
 // configuring env varaibles
-
 config();
 
 const app = express();
