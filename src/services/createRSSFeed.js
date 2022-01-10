@@ -1,4 +1,22 @@
-const createRSSFeed = ({ title, link, items }) => {
+const createRSSFeed = ({ title, link, results }) => {
+  // generating items for rss feed
+  const items = results
+    .map(
+      (result) => `
+      <item>
+          <title>${result.webTitle}</title>
+          <link>${result.webUrl}</link>
+          <description>${result.fields.body}</description>
+          <category>${result.webTitle}</category>
+          <pubDate>${new Date(
+            result.webPublicationDate
+          ).toUTCString()}</pubDate>
+          <guid>${result.webUrl}</guid>
+        </item>
+      `
+    )
+    .join("");
+
   const rssFeed = `
       <?xml version="1.0" encoding="UTF-8"?>
       <rss version="2.0">
@@ -9,7 +27,6 @@ const createRSSFeed = ({ title, link, items }) => {
           <language>en</language>
           <copyright>Guardian News and Media Limited or its affiliated companies. All rights reserved. ${new Date().getFullYear()}</copyright>
           <pubDate>${new Date().toUTCString()}</pubDate>
-          <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
           ${items}
         </channel>
       </rss>

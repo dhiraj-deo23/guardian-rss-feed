@@ -17,7 +17,7 @@ router.get("/:section", redisCache, async (req, res) => {
   try {
     const sections = [...sectionsCache];
 
-    // checking if endpoint is present in section list, also checks for small letters and/or hphenated endpoints only by default
+    // checking if endpoint is present in section list, also checks for small letters and/or hyphenated endpoints only by default
     if (!sections.includes(req.params.section))
       return res.status(400).json({ error: "invalid query!" });
 
@@ -29,28 +29,10 @@ router.get("/:section", redisCache, async (req, res) => {
     if (data.response.status === "error")
       return res.status(404).json({ error: data.response.message });
 
-    // generating items for rss feed
-    const items = data.response.results
-      .map(
-        (result) => `
-      <item>
-          <title>${result.webTitle}</title>
-          <link>${result.webUrl}</link>
-          <description>${result.fields.body}</description>
-          <category>${result.webTitle}</category>
-          <pubDate>${new Date(
-            result.webPublicationDate
-          ).toUTCString()}</pubDate>
-          <guid>${result.webUrl}</guid>
-        </item>
-      `
-      )
-      .join("");
-
     const dataForRssFeed = {
       title: data.response.section.webTitle,
       link: data.response.section.webUrl,
-      items,
+      results: data.response.results,
     };
 
     const feed = createRSSFeed(dataForRssFeed);
