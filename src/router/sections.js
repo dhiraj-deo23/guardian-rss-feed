@@ -11,7 +11,7 @@ const router = express.Router();
 const sectionsCache = await sectionList();
 
 router.get("/", async (req, res) => {
-  res.json(sectionsCache);
+  res.status(200).json(sectionsCache);
 });
 
 router.get("/:section", redisCache, async (req, res) => {
@@ -47,7 +47,7 @@ router.get("/:section", redisCache, async (req, res) => {
     setCache(req.params.section, JSON.stringify(feed));
     logger.info(`cache set for 10 mins for key ${req.params.section}`);
 
-    res.send(feed);
+    res.status(200).send(feed);
   } catch (error) {
     res.status(500).json({ error: `something went wrong. ${error.message}` });
   }

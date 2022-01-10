@@ -1,2 +1,6 @@
 {"level":"info","message":"is this working?","timestamp":"2022-01-10 12:57:48"}
 {"level":"info","message":"cache set for 10 mins for key film","timestamp":"2022-01-10 13:04:48"}
+{"level":"info","message":"cache set for 10 mins for key film","timestamp":"2022-01-10 15:12:49"}
+{"level":"info","message":"cache set for 10 mins for key film","timestamp":"2022-01-10 16:39:41"}
+{"level":"error","message":"redis client closed!","timestamp":"2022-01-10 16:51:54"}
+{"level":"info","message":"cache set for 10 mins for key film","timestamp":"2022-01-10 16:53:44"}

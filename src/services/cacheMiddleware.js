@@ -1,9 +1,14 @@
 import redis from "redis";
+import { logger } from "./loggerService.js";
 
 const REDIS_PORT = process.env.PORT || 6379;
 const DEFAULT_EXPIRATION = 600;
 
 const redisCLient = redis.createClient(REDIS_PORT);
+
+redisCLient.on("error", () => {
+  logger.error("redis client closed!");
+});
 
 const redisCache = async (req, res, next) => {
   const { section } = req.params;

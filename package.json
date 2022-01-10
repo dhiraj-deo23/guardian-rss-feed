@@ -6,7 +6,12 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
+  },
+  "jest": {
+      "testEnvironment": "jest-environment-node",
+      "transform": {}
   },
   "keywords": [],
   "author": "",
@@ -24,6 +29,8 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
-    "nodemon": "^2.0.15"
+    "jest": "^27.4.7",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6"
   }
 }
