@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  kotukotask:
+    image: kotukotask
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+      API_KEY: test
+      BASE_URL: https://content.guardianapis.com
+    ports:
+      - 3000:3000
+  redis:
+    image: "redis:6.2.6"
